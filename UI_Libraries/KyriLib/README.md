@@ -193,7 +193,7 @@ end)
 ---
 ## 🛡️ Audit Path
 To view the 100% untouched original source or the full repository backup, navigate to:
-*   [Original Source Code](/Original/source_raw.lua)
+*   [Original Source Code](./Original/source_raw.lua)
 
 ## 📜 License
 Original library is under the **MIT License**.
