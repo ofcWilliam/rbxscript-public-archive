@@ -18,7 +18,7 @@ A lightweight, high-performance admin UI library for Roblox. Build floating wind
 Load the library with `loadstring` in a LocalScript or executor. It attempts to parent to `CoreGui` first, then falls back to `PlayerGui` if access is denied.
 
 ```lua
-local lb = loadstring(game:HttpGet(""))()
+local lb = loadstring(game:HttpGet("https://raw.githubusercontent.com/ofcWilliam/rbxscript-public-archive/refs/heads/main/UI_Libraries/AKAdminLib/source.lua"))()
 ```
 
 ---
