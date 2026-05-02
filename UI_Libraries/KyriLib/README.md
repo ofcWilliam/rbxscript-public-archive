@@ -193,7 +193,6 @@ end)
 ---
 ## 🛡️ Audit Path
 To view the 100% untouched original source or the full repository backup, navigate to:
-*   [Original](/Original/)
 *   [Original Source Code](/Original/source_raw.lua)
 
 ## 📜 License
