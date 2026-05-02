@@ -1,7 +1,7 @@
 # 🧩 AK Admin Library (Archived)
 
 > [!IMPORTANT]
-> **This is an archived preservation.**
+> **This is an archived preservation.** I do not own this library.
 
 ### 👤 Original Creator Information
 *   **Developer:** [Absent](https://absent.wtf/me/)
