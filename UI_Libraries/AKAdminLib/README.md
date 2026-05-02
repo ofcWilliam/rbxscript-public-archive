@@ -37,7 +37,7 @@ Every element you add goes into whichever tab is currently active. The active ta
 
 ### Example Implementation
 ```lua
-local lb  = loadstring(game:HttpGet("https://absent.wtf/AKADMINLIB/LIB.lua"))()
+local lb  = loadstring(game:HttpGet("[https://absent.wtf/AKADMINLIB/LIB.lua](https://raw.githubusercontent.com/ofcWilliam/rbxscript-public-archive/refs/heads/main/UI_Libraries/AKAdminLib/source.lua)"))()
 local win = lb.new("My Script")
 
 local mainTab     = win:addTab("Main")
