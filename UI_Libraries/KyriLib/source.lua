@@ -766,6 +766,281 @@ function kyri.new(title, options)
 
     repeat task.wait() until loaded
 
+    -- Key system
+    if options.KeySystem then
+        local ks = options.KeySettings or {}
+        local validKeys = ks.Key or {}
+        local fileName = ks.FileName and (ks.FileName .. "_kyrikey.txt")
+        local th = kyri.theme
+        local mode = options.KeySystem == "Everytime" and "Everytime" or "Once"
+
+        local savedKeyValid = false
+        if mode == "Once" and fileName then
+            pcall(function()
+                if isfile(fileName) then
+                    local saved = readfile(fileName)
+                    for _, k in ipairs(validKeys) do
+                        if saved == k then savedKeyValid = true break end
+                    end
+                end
+            end)
+        end
+
+        if not savedKeyValid then
+            local keyGui = make("ScreenGui", {
+                Name = "KyriKey",
+                ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+                ResetOnSpawn = false,
+                IgnoreGuiInset = true,
+                DisplayOrder = 999999999,
+                Parent = localPlayer.PlayerGui
+            })
+
+            local dialog = make("Frame", {
+                Size = UDim2.fromOffset(480, 200),
+                Position = UDim2.new(0.5, -240, 0.5, -100),
+                BackgroundColor3 = th.bg,
+                Parent = keyGui
+            })
+            make("UICorner", { CornerRadius = UDim.new(0, 12), Parent = dialog })
+            make("UIStroke", { Color = th.border, Thickness = 1, Parent = dialog })
+
+            make("TextLabel", {
+                Size = UDim2.new(1, -60, 0, 28),
+                Position = UDim2.fromOffset(20, 18),
+                BackgroundTransparency = 1,
+                Text = ks.Title or "Key System",
+                TextColor3 = th.text,
+                TextSize = 16,
+                Font = Enum.Font.GothamBold,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                Parent = dialog
+            })
+
+            make("TextLabel", {
+                Size = UDim2.new(1, -60, 0, 18),
+                Position = UDim2.fromOffset(20, 44),
+                BackgroundTransparency = 1,
+                Text = ks.Subtitle or "Enter your key to continue",
+                TextColor3 = th.subtext,
+                TextSize = 12,
+                Font = Enum.Font.Gotham,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                Parent = dialog
+            })
+
+            local closeBtn = make("TextButton", {
+                Size = UDim2.fromOffset(30, 30),
+                Position = UDim2.new(1, -38, 0, 8),
+                BackgroundTransparency = 1,
+                Text = "×",
+                TextColor3 = th.subtext,
+                TextSize = 22,
+                Font = Enum.Font.GothamBold,
+                Parent = dialog
+            })
+
+            -- left side: key input
+            make("TextLabel", {
+                Size = UDim2.new(0.5, -30, 0, 16),
+                Position = UDim2.fromOffset(20, 80),
+                BackgroundTransparency = 1,
+                Text = "Key",
+                TextColor3 = th.subtext,
+                TextSize = 11,
+                Font = Enum.Font.Gotham,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                Parent = dialog
+            })
+
+            local keyBox = make("Frame", {
+                Size = UDim2.new(0.52, 0, 0, 36),
+                Position = UDim2.fromOffset(20, 98),
+                BackgroundColor3 = th.element,
+                Parent = dialog
+            })
+            make("UICorner", { CornerRadius = UDim.new(0, 8), Parent = keyBox })
+            make("UIStroke", { Color = th.border, Thickness = 1, Parent = keyBox })
+
+            local keyInput = make("TextBox", {
+                Size = UDim2.new(1, -16, 1, 0),
+                Position = UDim2.fromOffset(8, 0),
+                BackgroundTransparency = 1,
+                Text = "",
+                PlaceholderText = "key",
+                TextColor3 = th.text,
+                PlaceholderColor3 = th.subtext,
+                TextSize = 13,
+                Font = Enum.Font.Gotham,
+                ClearTextOnFocus = false,
+                Parent = keyBox
+            })
+
+            -- right side: note
+            if ks.Note then
+                make("TextLabel", {
+                    Size = UDim2.new(0.44, -22, 1, -20),
+                    Position = UDim2.new(0.55, 12, 0, 10),
+                    BackgroundTransparency = 1,
+                    Text = ks.Note,
+                    TextColor3 = th.text,
+                    TextSize = 12,
+                    Font = Enum.Font.Gotham,
+                    TextXAlignment = Enum.TextXAlignment.Left,
+                    TextYAlignment = Enum.TextYAlignment.Center,
+                    TextWrapped = true,
+                    Parent = dialog
+                })
+            end
+
+            local submitBtn = make("TextButton", {
+                Size = UDim2.new(0.52, 0, 0, 32),
+                Position = UDim2.fromOffset(20, 148),
+                BackgroundColor3 = th.accent,
+                Text = "Submit",
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                TextSize = 13,
+                Font = Enum.Font.GothamBold,
+                Parent = dialog
+            })
+            make("UICorner", { CornerRadius = UDim.new(0, 8), Parent = submitBtn })
+
+            local errLabel = make("TextLabel", {
+                Size = UDim2.new(0.52, 0, 0, 18),
+                Position = UDim2.fromOffset(20, 183),
+                BackgroundTransparency = 1,
+                Text = "",
+                TextColor3 = Color3.fromRGB(255, 80, 80),
+                TextSize = 11,
+                Font = Enum.Font.Gotham,
+                TextXAlignment = Enum.TextXAlignment.Left,
+                Parent = dialog
+            })
+
+            local keyDone = false
+            local keyAccepted = false
+
+            local function tryKey(input)
+                local trimmed = input:match("^%s*(.-)%s*$")
+                for _, k in ipairs(validKeys) do
+                    if trimmed == k then return true, trimmed end
+                end
+                return false
+            end
+
+            submitBtn.MouseButton1Click:Connect(function()
+                local ok, trimmed = tryKey(keyInput.Text)
+                if ok then
+                    if mode == "Once" and fileName then
+                        pcall(function() writefile(fileName, trimmed) end)
+                    end
+                    keyAccepted = true
+                    keyDone = true
+                else
+                    errLabel.Text = "invalid key"
+                    keyInput.Text = ""
+                end
+            end)
+
+            closeBtn.MouseButton1Click:Connect(function()
+                keyDone = true
+            end)
+
+            repeat task.wait() until keyDone
+            keyGui:Destroy()
+
+            if not keyAccepted then return end
+        end
+
+        -- Success splash
+        local splashGui = make("ScreenGui", {
+            Name = "KyriKeySplash",
+            ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+            ResetOnSpawn = false,
+            IgnoreGuiInset = true,
+            DisplayOrder = 999999999,
+            Parent = localPlayer.PlayerGui
+        })
+
+        local card = make("Frame", {
+            Size = UDim2.fromOffset(280, 110),
+            Position = UDim2.new(0.5, -140, 0.5, -55),
+            BackgroundColor3 = kyri.theme.bg,
+            BackgroundTransparency = 1,
+            Parent = splashGui
+        })
+        make("UICorner", { CornerRadius = UDim.new(0, 14), Parent = card })
+        make("UIStroke", { Color = kyri.theme.border, Thickness = 1, Transparency = 1, Parent = card })
+
+        local accent_bar = make("Frame", {
+            Size = UDim2.fromOffset(3, 32),
+            Position = UDim2.fromOffset(18, 22),
+            BackgroundColor3 = kyri.theme.accent,
+            BackgroundTransparency = 1,
+            Parent = card
+        })
+        make("UICorner", { CornerRadius = UDim.new(1, 0), Parent = accent_bar })
+
+        local splashTitle = make("TextLabel", {
+            Size = UDim2.new(1, -50, 0, 26),
+            Position = UDim2.fromOffset(30, 20),
+            BackgroundTransparency = 1,
+            Text = ks.Title or title or "Key System",
+            TextColor3 = kyri.theme.text,
+            TextTransparency = 1,
+            TextSize = 17,
+            Font = Enum.Font.GothamBold,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            Parent = card
+        })
+
+        local splashSub = make("TextLabel", {
+            Size = UDim2.new(1, -50, 0, 20),
+            Position = UDim2.fromOffset(30, 46),
+            BackgroundTransparency = 1,
+            Text = "by " .. (ks.Creator or "you"),
+            TextColor3 = kyri.theme.subtext,
+            TextTransparency = 1,
+            TextSize = 13,
+            Font = Enum.Font.Gotham,
+            TextXAlignment = Enum.TextXAlignment.Left,
+            Parent = card
+        })
+
+        local splashBrand = make("TextLabel", {
+            Size = UDim2.new(1, -18, 0, 18),
+            Position = UDim2.new(0, 0, 1, -26),
+            BackgroundTransparency = 1,
+            Text = "Kyri UI",
+            TextColor3 = kyri.theme.subtext,
+            TextTransparency = 1,
+            TextSize = 11,
+            Font = Enum.Font.Gotham,
+            TextXAlignment = Enum.TextXAlignment.Right,
+            Parent = card
+        })
+
+        local fadeIn = TweenInfo.new(0.3, Enum.EasingStyle.Quad)
+        kyri.svc.tw:Create(card, fadeIn, { BackgroundTransparency = 0 }):Play()
+        kyri.svc.tw:Create(card:FindFirstChildOfClass("UIStroke"), fadeIn, { Transparency = 0 }):Play()
+        kyri.svc.tw:Create(accent_bar, fadeIn, { BackgroundTransparency = 0 }):Play()
+        kyri.svc.tw:Create(splashTitle, fadeIn, { TextTransparency = 0 }):Play()
+        kyri.svc.tw:Create(splashSub, fadeIn, { TextTransparency = 0 }):Play()
+        kyri.svc.tw:Create(splashBrand, fadeIn, { TextTransparency = 0 }):Play()
+
+        task.wait(2)
+
+        local fadeOut = TweenInfo.new(0.4)
+        kyri.svc.tw:Create(card, fadeOut, { BackgroundTransparency = 1 }):Play()
+        kyri.svc.tw:Create(card:FindFirstChildOfClass("UIStroke"), fadeOut, { Transparency = 1 }):Play()
+        kyri.svc.tw:Create(accent_bar, fadeOut, { BackgroundTransparency = 1 }):Play()
+        kyri.svc.tw:Create(splashTitle, fadeOut, { TextTransparency = 1 }):Play()
+        kyri.svc.tw:Create(splashSub, fadeOut, { TextTransparency = 1 }):Play()
+        kyri.svc.tw:Create(splashBrand, fadeOut, { TextTransparency = 1 }):Play()
+        task.wait(0.5)
+        splashGui:Destroy()
+    end
+
     local w = {}
     local conns = {}
 
