@@ -742,7 +742,7 @@ function kyri.new(title, options)
     local loaded = false
 
     task.spawn(function()
-        local url = "https://raw.githubusercontent.com/ofcWilliam/rbxscript-resources/refs/heads/main/Backup/UILibs/KyriLib/kyriliblogo.png"
+        local url = "https://raw.githubusercontent.com/ofcWilliam/rbxscript-public-archive/refs/heads/main/UI_Libraries/KyriLib/kyriliblogo.png"
         local path = "kyrilib_logo.png"
 
         if not isfile(path) then
