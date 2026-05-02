@@ -14,7 +14,7 @@
 Use this loadstring to use the version optimized for this archive:
 
 ```lua
-local kyri = loadstring(game:HttpGet("https://raw.githubusercontent.com/ofcWilliam/rbxscript-public-archive/main/UI_Libraries/KyriLib/Source.lua"))()
+local kyri = loadstring(game:HttpGet("https://raw.githubusercontent.com/ofcWilliam/rbxscript-public-archive/main/UI_Libraries/KyriLib/source.lua"))()
 ```
 
 ---
@@ -24,7 +24,7 @@ Modern UI library for Roblox executor scripts. Clean dark theme, smooth animatio
 
 ### Quick Start Example
 ```lua
-local kyri = loadstring(game:HttpGet("https://raw.githubusercontent.com/ofcWilliam/rbxscript-public-archive/main/UI_Libraries/KyriLib/Source.lua"))()
+local kyri = loadstring(game:HttpGet("https://raw.githubusercontent.com/ofcWilliam/rbxscript-public-archive/main/UI_Libraries/KyriLib/source.lua"))()
 
 local w = kyri.new("my script", {
     GameName = "MyGame",
