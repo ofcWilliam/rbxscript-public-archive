@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AK Admin Library — Documentation</title>
+
+<meta property="og:image" content="https://cdn.discordapp.com/attachments/1487163462902747136/1490350140802732205/IMG_2486.png?ex=69df99ba&amp;is=69de483a&amp;hm=b95139ad26284d6d5553e7873383ad4e0af286d70fa0c87f59856609e2dd49ef&amp;">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://absent.wtf/AKADMINLIB/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.discordapp.com/attachments/1487163462902747136/1490350140802732205/IMG_2486.png?ex=69df99ba&amp;is=69de483a&amp;hm=b95139ad26284d6d5553e7873383ad4e0af286d70fa0c87f59856609e2dd49ef&amp;">
+<meta name="theme-color" content="#4ade80">
+
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./AKAdminLib_Documentation_files/css2" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #080808;
+    --bg1:      #0f0f0f;
+    --bg2:      #161616;
+    --bg3:      #1c1c1c;
+    --border:   #232323;
+    --border-hi:#303030;
+    --text:     #ececec;
+    --dim:      #888;
+    --muted:    #444;
+    --green:    #4ade80;
+    --green-bg: rgba(74,222,128,0.07);
+    --green-bd: rgba(74,222,128,0.18);
+    --amber:    #fbbf24;
+    --amber-bg: rgba(251,191,36,0.07);
+    --amber-bd: rgba(251,191,36,0.18);
+    --blue:     #60a5fa;
+    --blue-bg:  rgba(96,165,250,0.07);
+    --blue-bd:  rgba(96,165,250,0.18);
+    --red:      #f87171;
+    --red-bg:   rgba(248,113,113,0.07);
+    --red-bd:   rgba(248,113,113,0.18);
+    --mono:     'Azeret Mono', monospace;
+    --sans:     'Instrument Sans', sans-serif;
+    --radius:   8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.65;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+    background-size: 56px 56px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--bg1);
+    border-right: 1px solid var(--border);
+    scrollbar-width: none;
+  }
+  .sidebar::-webkit-scrollbar { display: none; }
+
+  .sidebar-logo {
+    padding: 26px 18px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-line {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 4px;
+  }
+
+  .logo-chip {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--green);
+    color: #000;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.04em;
+  }
+
+  .logo-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--muted);
+    padding-top: 2px;
+  }
+
+  .nav-section {
+    padding: 18px 0 4px;
+  }
+
+  .nav-section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 18px 7px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 18px;
+    color: var(--dim);
+    text-decoration: none;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    border-left: 2px solid transparent;
+    transition: color 0.12s, background 0.12s, border-color 0.12s;
+    cursor: pointer;
+  }
+  .nav-item:hover { color: var(--text); background: rgba(255,255,255,0.025); }
+  .nav-item.active { color: var(--green); border-left-color: var(--green); background: var(--green-bg); }
+
+  .nav-pip {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+    flex-shrink: 0;
+  }
+  .nav-item.active .nav-pip { opacity: 1; }
+
+  .main {
+    padding: 56px 60px 80px;
+    max-width: 900px;
+  }
+
+  .hero {
+    margin-bottom: 56px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: var(--mono);
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 14px;
+  }
+
+  h1 .accent { color: var(--green); }
+
+  .hero-desc {
+    font-size: 14px;
+    color: var(--dim);
+    max-width: 500px;
+    margin-bottom: 26px;
+    line-height: 1.75;
+  }
+
+  .url-bar {
+    display: flex;
+    align-items: center;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    max-width: 560px;
+    margin-bottom: 18px;
+  }
+
+  .url-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    padding: 0 13px;
+    border-right: 1px solid var(--border);
+    white-space: nowrap;
+    letter-spacing: 0.08em;
+  }
+
+  .url-text {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--green);
+    padding: 10px 13px;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .url-copy {
+    background: none;
+    border: none;
+    border-left: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 0 13px;
+    height: 38px;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: color 0.12s, background 0.12s;
+  }
+  .url-copy:hover { background: rgba(255,255,255,0.04); color: var(--text); }
+  .url-copy.ok { color: var(--green); }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .chip {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    padding: 3px 9px;
+    border-radius: 100px;
+    border: 1px solid;
+    letter-spacing: 0.03em;
+  }
+  .chip-g { color: var(--green); border-color: var(--green-bd); background: var(--green-bg); }
+  .chip-a { color: var(--amber); border-color: var(--amber-bd); background: var(--amber-bg); }
+  .chip-b { color: var(--blue);  border-color: var(--blue-bd);  background: var(--blue-bg); }
+
+  .doc-section {
+    margin-bottom: 64px;
+    scroll-margin-top: 28px;
+  }
+
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  h2::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-desc {
+    color: var(--dim);
+    margin-bottom: 18px;
+    line-height: 1.75;
+    font-size: 13.5px;
+  }
+
+  .card {
+    background: var(--bg1);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: var(--border-hi); }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 16px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--bg2);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .card.open .card-head { border-bottom-color: var(--border); }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.06em;
+    flex-shrink: 0;
+  }
+  .tag-fn  { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-bd); }
+  .tag-ret { background: var(--blue-bg);  color: var(--blue);  border: 1px solid var(--blue-bd); }
+  .tag-new { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-bd); }
+
+  .card-sig {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text);
+    flex: 1;
+  }
+  .card-sig .args { color: var(--dim); font-size: 11.5px; }
+
+  .card-arrow {
+    color: var(--muted);
+    font-size: 10px;
+    transition: transform 0.18s;
+  }
+  .card.open .card-arrow { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    padding: 18px 16px;
+  }
+  .card.open .card-body { display: block; }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--dim);
+    margin-bottom: 16px;
+    line-height: 1.75;
+  }
+
+  .params-head {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .param {
+    display: grid;
+    grid-template-columns: 150px 90px 1fr;
+    gap: 0;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12.5px;
+    align-items: baseline;
+  }
+  .param:last-child { border-bottom: none; }
+
+  .p-name { font-family: var(--mono); color: var(--text); font-size: 12px; }
+  .p-opt  { font-family: var(--mono); color: var(--amber); font-size: 10px; margin-left: 4px; }
+  .p-type { font-family: var(--mono); color: var(--blue); font-size: 11px; }
+  .p-desc { color: var(--dim); font-size: 12.5px; }
+
+  .returns {
+    margin-top: 14px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+  }
+
+  .returns-head {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .ret-row {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    padding: 2px 0;
+    line-height: 1.6;
+  }
+  .ret-row code { color: var(--green); }
+
+  .code-wrap {
+    background: #0a0a0a;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 14px 0;
+  }
+
+  .code-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7px 13px;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .code-lang {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .code-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    cursor: pointer;
+    transition: color 0.12s;
+    letter-spacing: 0.04em;
+  }
+  .code-btn:hover { color: var(--text); }
+  .code-btn.ok { color: var(--green); }
+
+  pre { padding: 15px 16px; overflow-x: auto; }
+  pre code {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--dim);
+  }
+
+  .kw  { color: #c084fc; }
+  .fn  { color: #93c5fd; }
+  .str { color: #86efac; }
+  .num { color: #fb923c; }
+  .var { color: #fde68a; }
+  .op  { color: #6b7280; }
+
+  .note {
+    display: flex;
+    gap: 10px;
+    background: var(--amber-bg);
+    border: 1px solid var(--amber-bd);
+    border-radius: var(--radius);
+    padding: 11px 13px;
+    margin: 13px 0;
+    font-size: 12.5px;
+    color: var(--dim);
+    line-height: 1.65;
+  }
+  .note-ico { color: var(--amber); flex-shrink: 0; font-size: 13px; }
+
+  .danger {
+    display: flex;
+    gap: 10px;
+    background: var(--red-bg);
+    border: 1px solid var(--red-bd);
+    border-radius: var(--radius);
+    padding: 11px 13px;
+    margin: 13px 0;
+    font-size: 12.5px;
+    color: var(--dim);
+    line-height: 1.65;
+  }
+  .danger-ico { color: var(--red); flex-shrink: 0; font-size: 13px; }
+
+  .tip {
+    display: flex;
+    gap: 10px;
+    background: var(--green-bg);
+    border: 1px solid var(--green-bd);
+    border-radius: var(--radius);
+    padding: 11px 13px;
+    margin: 13px 0;
+    font-size: 12.5px;
+    color: var(--dim);
+    line-height: 1.65;
+  }
+  .tip-ico { color: var(--green); flex-shrink: 0; font-size: 13px; }
+
+  .steps {
+    counter-reset: step;
+    margin: 14px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 11px 14px;
+    font-size: 13px;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+
+  .step-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--green);
+    background: var(--green-bg);
+    border: 1px solid var(--green-bd);
+    border-radius: 4px;
+    padding: 1px 7px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  p code, li code, .card-desc code, .note code, .danger code, .tip code, .section-desc code, .step code, .ret-row code {
+    font-family: var(--mono);
+    font-size: 11px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--green);
+  }
+
+  ul { padding-left: 18px; }
+  li { color: var(--dim); font-size: 13px; margin-bottom: 5px; }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 720px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { position: static; height: auto; }
+    .main { padding: 28px 18px 60px; }
+    .param { grid-template-columns: 1fr 1fr; }
+    .p-desc { grid-column: 1/-1; padding-top: 2px; }
+  }
+</style>
+</head>
+<body cz-shortcut-listen="true">
+<div class="layout">
+
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-line">
+      <span class="logo-chip">AK</span>
+      <span class="logo-name">ADMIN LIB</span>
+    </div>
+    <div class="logo-sub">Roblox UI Library</div>
+  </div>
+  <nav>
+    <div class="nav-section">
+      <div class="nav-section-label">Getting Started</div>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#overview"><span class="nav-pip"></span>Overview</a>
+      <a class="nav-item active" href="https://absent.wtf/AKADMINLIB/#installation"><span class="nav-pip"></span>Installation</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#quickstart"><span class="nav-pip"></span>Quick Start</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Window</div>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#lbnew"><span class="nav-pip"></span>lb.new()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#addtab"><span class="nav-pip"></span>addTab()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#switchtab"><span class="nav-pip"></span>switchTab()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#minimize"><span class="nav-pip"></span>minimize()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#onclose"><span class="nav-pip"></span>onClose()</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Elements</div>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#button"><span class="nav-pip"></span>addButton()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#toggle"><span class="nav-pip"></span>addToggle()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#slider"><span class="nav-pip"></span>addSlider()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#textbox"><span class="nav-pip"></span>addTextBox()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#dropdown"><span class="nav-pip"></span>addDropdown()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#keybind"><span class="nav-pip"></span>addKeybind()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#holdbutton"><span class="nav-pip"></span>addHoldButton()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#playerlist"><span class="nav-pip"></span>addPlayerList()</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Layout</div>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#section"><span class="nav-pip"></span>addSection()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#separator"><span class="nav-pip"></span>addSeparator()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#label"><span class="nav-pip"></span>addLabel()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#status"><span class="nav-pip"></span>addStatus()</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Misc</div>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#notify"><span class="nav-pip"></span>notify()</a>
+      <a class="nav-item" href="https://absent.wtf/AKADMINLIB/#addconnection"><span class="nav-pip"></span>addConnection()</a>
+    </div>
+  </nav>
+</aside>
+
+<main class="main">
+
+  <div class="hero" id="overview">
+    <div class="eyebrow">Roblox · LocalScript UI Library</div>
+    <h1>AK Admin <span class="accent">Library</span></h1>
+    <p class="hero-desc">A lightweight admin UI library for Roblox. Build floating windows with tabs, toggles, sliders, dropdowns, player lists, and notifications — loaded in a single line.</p>
+    <div class="url-bar">
+      <span class="url-label">URL</span>
+      <span class="url-text" id="urltext">https://absent.wtf/AKADMINLIB/LIB.lua</span>
+      <button class="url-copy" onclick="copyUrl(this)">COPY</button>
+    </div>
+    <div class="chips">
+      <span class="chip chip-g">CoreGui Support</span>
+      <span class="chip chip-g">Tab System</span>
+      <span class="chip chip-g">Player List</span>
+      <span class="chip chip-a">Draggable &amp; Resizable</span>
+      <span class="chip chip-b">Toast Notifications</span>
+      <span class="chip chip-b">Touch &amp; Mouse</span>
+    </div>
+  </div>
+
+  <div class="doc-section" id="installation">
+    <div class="section-eyebrow">01 — setup</div>
+    <h2>Installation</h2>
+    <p class="section-desc">Load the library with <code>loadstring</code> in a LocalScript or executor. It attempts to parent to <code>CoreGui</code> first, then falls back to <code>PlayerGui</code> if access is denied.</p>
+    <div class="code-wrap">
+      <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+      <pre><code><span class="kw">local</span> <span class="var">lb</span> <span class="op">=</span> <span class="fn">loadstring</span><span class="op">(</span><span class="fn">game</span><span class="op">:</span><span class="fn">HttpGet</span><span class="op">(</span><span class="str">"https://absent.wtf/AKADMINLIB/LIB.lua"</span><span class="op">))()</span></code></pre>
+    </div>
+  </div>
+
+  <div class="doc-section" id="quickstart">
+    <div class="section-eyebrow">02 — example</div>
+    <h2>Quick Start</h2>
+    <p class="section-desc">Understanding how tabs work is the most important part of using this library correctly. Read the rules below before writing any code.</p>
+    <div class="danger">
+      <span class="danger-ico">✖</span>
+      <div>
+        <strong style="color:var(--red);">Tab Rule — Read This First</strong><br>
+        Every element you add goes into whichever tab is currently active. The active tab is controlled entirely by <code>win:switchTab(tab)</code>. You must call <code>switchTab</code> before adding elements to any tab — including the first one if you want to be explicit. Elements are never automatically distributed across tabs.
+      </div>
+    </div>
+    <p class="section-desc" style="margin-top:16px;">The correct pattern for building a tabbed window is always the same: create all tabs first, then loop through each tab by calling <code>switchTab</code> and adding its elements, then call <code>switchTab</code> one final time on whichever tab you want visible on open.</p>
+    <div class="steps">
+      <div class="step"><span class="step-num">1</span> Call <code>win:addTab()</code> for every tab you need. Store each return value in a variable.</div>
+      <div class="step"><span class="step-num">2</span> Call <code>win:switchTab(tabVar)</code> to make a tab active.</div>
+      <div class="step"><span class="step-num">3</span> Add all elements that belong to that tab immediately after.</div>
+      <div class="step"><span class="step-num">4</span> Repeat steps 2–3 for every other tab.</div>
+      <div class="step"><span class="step-num">5</span> At the very end, call <code>win:switchTab(firstTab)</code> to set which tab opens by default.</div>
+    </div>
+    <div class="code-wrap">
+      <div class="code-bar"><span class="code-lang">lua — two tab example</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+      <pre><code><span class="kw">local</span> <span class="var">lb</span>  <span class="op">=</span> <span class="fn">loadstring</span><span class="op">(</span><span class="fn">game</span><span class="op">:</span><span class="fn">HttpGet</span><span class="op">(</span><span class="str">"https://absent.wtf/AKADMINLIB/LIB.lua"</span><span class="op">))()</span>
+<span class="kw">local</span> <span class="var">win</span> <span class="op">=</span> <span class="var">lb</span><span class="op">.</span><span class="fn">new</span><span class="op">(</span><span class="str">"My Script"</span><span class="op">)</span>
+
+<span class="kw">local</span> <span class="var">mainTab</span>     <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addTab</span><span class="op">(</span><span class="str">"Main"</span><span class="op">)</span>
+<span class="kw">local</span> <span class="var">settingsTab</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addTab</span><span class="op">(</span><span class="str">"Settings"</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">mainTab</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addSection</span><span class="op">(</span><span class="str">"Combat"</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addToggle</span><span class="op">(</span><span class="str">"ESP"</span><span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">v</span><span class="op">)</span> <span class="fn">print</span><span class="op">(</span><span class="var">v</span><span class="op">)</span> <span class="kw">end</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addSlider</span><span class="op">(</span><span class="str">"Speed"</span><span class="op">,</span> <span class="num">16</span><span class="op">,</span> <span class="num">100</span><span class="op">,</span> <span class="num">16</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">v</span><span class="op">)</span> <span class="fn">print</span><span class="op">(</span><span class="var">v</span><span class="op">)</span> <span class="kw">end</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">settingsTab</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addSection</span><span class="op">(</span><span class="str">"Preferences"</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addToggle</span><span class="op">(</span><span class="str">"Dark Mode"</span><span class="op">,</span> <span class="kw">true</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">v</span><span class="op">)</span> <span class="fn">print</span><span class="op">(</span><span class="var">v</span><span class="op">)</span> <span class="kw">end</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">mainTab</span><span class="op">)</span></code></pre>
+    </div>
+    <div class="note">
+      <span class="note-ico">⚠</span>
+      <span>The final <code>win:switchTab(mainTab)</code> at the bottom is what makes the Main tab visible when the window opens. Without it, the last tab you added elements to would be shown instead.</span>
+    </div>
+    <p class="section-desc" style="margin-top: 16px;">If you have no tabs at all, elements are added directly to the window's scroll frame — no <code>switchTab</code> call is needed.</p>
+  </div>
+
+  <div class="doc-section" id="lbnew">
+    <div class="section-eyebrow">03 — window</div>
+    <h2>lb.new()</h2>
+    <p class="section-desc">Creates a new floating window. Duplicate windows with the same title are automatically destroyed before the new one is created.</p>
+    <div class="card open">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-new">NEW</span>
+        <span class="card-sig"><span class="var">win</span> = lb.<span class="fn">new</span><span class="args">( title? )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Attempts to parent to <code>CoreGui</code>, falls back to <code>PlayerGui</code>. If a window with the same title already exists it is destroyed first, so calling <code>lb.new()</code> again is safe for re-execution.</p>
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">title <span class="p-opt">optional</span></span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Shown in the title bar as <code>AK ADMIN • title</code>. Also used as the de-duplication key.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — window object</div>
+          <div class="ret-row"><code>win:addTab(name)</code> — create a tab and return its ref</div>
+          <div class="ret-row"><code>win:switchTab(tab)</code> — set the active tab</div>
+          <div class="ret-row"><code>win:minimize()</code> — toggle collapsed state</div>
+          <div class="ret-row"><code>win:resize()</code> — recalculate window height</div>
+          <div class="ret-row"><code>win:notify(...)</code> — show a toast</div>
+          <div class="ret-row"><code>win:onClose(fn)</code> — register a close callback</div>
+          <div class="ret-row"><code>win:addConnection(signal, fn)</code> — managed connection</div>
+          <div class="ret-row">All <code>add*</code> element methods</div>
+        </div>
+        <div class="note">
+          <span class="note-ico">⚠</span>
+          <span><strong>RightShift</strong> toggles the window's visibility. This is hardcoded and cannot be changed from script.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="addtab">
+    <h2>addTab()</h2>
+    <p class="section-desc">Registers a new tab in the navigation bar and returns a tab reference. The tab reference is required by <code>switchTab()</code> — always store it.</p>
+    <div class="card open">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">tab</span> = win:<span class="fn">addTab</span><span class="args">( name )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Creates the tab button and an empty content container. <code>addTab</code> does not make a tab active on its own — you must always call <code>win:switchTab(tab)</code> explicitly before adding elements to it. Call all <code>addTab</code> calls first, then handle each tab's content separately.</p>
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Label shown in the tab button.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — tab ref</div>
+          <div class="ret-row">An opaque reference. Pass it to <code>win:switchTab(tab)</code> to target that tab for element insertion.</div>
+        </div>
+        <div class="danger">
+          <span class="danger-ico">✖</span>
+          <span>Never add elements immediately after <code>addTab()</code> without calling <code>switchTab()</code> first. The elements will be placed in whichever tab was active before, not the one you just created.</span>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="kw">local</span> <span class="var">tabA</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addTab</span><span class="op">(</span><span class="str">"Main"</span><span class="op">)</span>
+<span class="kw">local</span> <span class="var">tabB</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addTab</span><span class="op">(</span><span class="str">"Settings"</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">tabA</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addButton</span><span class="op">(</span><span class="str">"Action"</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">tabB</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addToggle</span><span class="op">(</span><span class="str">"Option"</span><span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">tabA</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="switchtab">
+    <h2>switchTab()</h2>
+    <p class="section-desc">Makes a tab active. Every <code>add*</code> call after this goes into that tab. This is the only way to control which tab receives elements.</p>
+    <div class="card open">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-fn">FN</span>
+        <span class="card-sig">win:<span class="fn">switchTab</span><span class="args">( tab )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Activates the given tab both visually (highlights the tab button) and as the insertion target for new elements. There is no implicit switching — you are always responsible for calling this.</p>
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">tab</span>
+          <span class="p-type">tab ref</span>
+          <span class="p-desc">The value returned by <code>addTab()</code>. Do not pass a string or index.</span>
+        </div>
+        <div class="tip">
+          <span class="tip-ico">✦</span>
+          <span>Call <code>switchTab</code> at the very end of your setup script on the tab you want shown by default. This sets the visual state correctly when the window first appears.</span>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua — full pattern</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="kw">local</span> <span class="var">t1</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addTab</span><span class="op">(</span><span class="str">"Main"</span><span class="op">)</span>
+<span class="kw">local</span> <span class="var">t2</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addTab</span><span class="op">(</span><span class="str">"Misc"</span><span class="op">)</span>
+<span class="kw">local</span> <span class="var">t3</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addTab</span><span class="op">(</span><span class="str">"Settings"</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">t1</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addButton</span><span class="op">(</span><span class="str">"Goes into t1"</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addToggle</span><span class="op">(</span><span class="str">"Also t1"</span><span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">t2</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addButton</span><span class="op">(</span><span class="str">"Goes into t2"</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">t3</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addToggle</span><span class="op">(</span><span class="str">"Goes into t3"</span><span class="op">,</span> <span class="kw">true</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span>
+
+<span class="var">win</span><span class="op">:</span><span class="fn">switchTab</span><span class="op">(</span><span class="var">t1</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="minimize">
+    <h2>minimize()</h2>
+    <p class="section-desc">Toggles the window between its collapsed (title bar only) and expanded states. The window also has a built-in <code>—</code> button that calls this.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-fn">FN</span>
+        <span class="card-sig">win:<span class="fn">minimize</span><span class="args">()</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">No parameters. Collapses the window to show only the title bar. Calling again restores the full window. Has a short debounce to prevent rapid toggling.</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">minimize</span><span class="op">()</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="onclose">
+    <h2>onClose()</h2>
+    <p class="section-desc">Registers a callback that fires when the window's X button is pressed. All managed connections are disconnected and the ScreenGui is destroyed after callbacks run.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-fn">FN</span>
+        <span class="card-sig">win:<span class="fn">onClose</span><span class="args">( callback )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">callback</span>
+          <span class="p-type">function</span>
+          <span class="p-desc">Called before the GUI is destroyed. Use this to clean up any state your script maintains.</span>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">onClose</span><span class="op">(</span><span class="kw">function</span><span class="op">()</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Window closed"</span><span class="op">)</span>
+<span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="button">
+    <div class="section-eyebrow">04 — elements</div>
+    <h2>addButton()</h2>
+    <p class="section-desc">Adds a clickable button to the active tab.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-fn">FN</span>
+        <span class="card-sig">win:<span class="fn">addButton</span><span class="args">( name, callback )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Label on the button. Supports text wrapping.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">callback <span class="p-opt">optional</span></span>
+          <span class="p-type">function</span>
+          <span class="p-desc">Called on click.</span>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">addButton</span><span class="op">(</span><span class="str">"Teleport to Spawn"</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span>
+    <span class="fn">game</span><span class="op">.</span><span class="var">Players</span><span class="op">.</span><span class="var">LocalPlayer</span><span class="op">.</span><span class="var">Character</span><span class="op">.</span><span class="var">HumanoidRootPart</span><span class="op">.</span><span class="var">CFrame</span> <span class="op">=</span> <span class="fn">CFrame</span><span class="op">.</span><span class="fn">new</span><span class="op">(</span><span class="num">0</span><span class="op">,</span> <span class="num">5</span><span class="op">,</span> <span class="num">0</span><span class="op">)</span>
+<span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="toggle">
+    <h2>addToggle()</h2>
+    <p class="section-desc">Adds an animated pill-style on/off toggle.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">ctrl</span> = win:<span class="fn">addToggle</span><span class="args">( name, default, callback )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Label shown to the left of the toggle.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">default <span class="p-opt">optional</span></span>
+          <span class="p-type">boolean</span>
+          <span class="p-desc">Initial state. Defaults to <code>false</code>.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">callback <span class="p-opt">optional</span></span>
+          <span class="p-type">function(v: boolean)</span>
+          <span class="p-desc">Fires on every state change with the new boolean value.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — ctrl object</div>
+          <div class="ret-row"><code>ctrl:set(bool)</code> — set state, fires callback</div>
+          <div class="ret-row"><code>ctrl:get()</code> — returns current boolean</div>
+          <div class="ret-row"><code>ctrl.Value</code> — readable/writable property, does NOT fire callback</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="kw">local</span> <span class="var">esp</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addToggle</span><span class="op">(</span><span class="str">"ESP"</span><span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">v</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"ESP:"</span><span class="op">,</span> <span class="var">v</span><span class="op">)</span>
+<span class="kw">end</span><span class="op">)</span>
+
+<span class="var">esp</span><span class="op">:</span><span class="fn">set</span><span class="op">(</span><span class="kw">true</span><span class="op">)</span>
+<span class="fn">print</span><span class="op">(</span><span class="var">esp</span><span class="op">:</span><span class="fn">get</span><span class="op">())</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="slider">
+    <h2>addSlider()</h2>
+    <p class="section-desc">Adds a draggable slider with a fill bar and live value readout. Works with both mouse and touch.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">ctrl</span> = win:<span class="fn">addSlider</span><span class="args">( name, min, max, default, step, callback )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Label shown above the slider track.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">min</span>
+          <span class="p-type">number</span>
+          <span class="p-desc">Minimum value. Must be strictly less than <code>max</code>.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">max</span>
+          <span class="p-type">number</span>
+          <span class="p-desc">Maximum value.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">default <span class="p-opt">optional</span></span>
+          <span class="p-type">number</span>
+          <span class="p-desc">Starting value. Clamped to [min, max]. Defaults to min.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">step <span class="p-opt">optional</span></span>
+          <span class="p-type">number</span>
+          <span class="p-desc">Snap increment. Defaults to <code>1</code>. Pass a value like <code>5</code> to snap in increments of 5, or <code>0.1</code> for decimal steps. If omitted you can pass the callback directly in this position.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">callback <span class="p-opt">optional</span></span>
+          <span class="p-type">function(v: number)</span>
+          <span class="p-desc">Fires continuously while dragging with the current snapped value.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — ctrl object</div>
+          <div class="ret-row"><code>ctrl:set(num)</code> — set value programmatically, clamped and snapped, does not fire callback</div>
+          <div class="ret-row"><code>ctrl:get()</code> — returns current value</div>
+        </div>
+        <div class="note">
+          <span class="note-ico">⚠</span>
+          <span>If <code>min &gt;= max</code> the slider is silently skipped and a no-op object is returned. If <code>step</code> is omitted, the callback can be passed as the 5th argument directly.</span>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="kw">local</span> <span class="var">spd</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addSlider</span><span class="op">(</span><span class="str">"Walk Speed"</span><span class="op">,</span> <span class="num">16</span><span class="op">,</span> <span class="num">200</span><span class="op">,</span> <span class="num">16</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">v</span><span class="op">)</span>
+    <span class="fn">game</span><span class="op">.</span><span class="var">Players</span><span class="op">.</span><span class="var">LocalPlayer</span><span class="op">.</span><span class="var">Character</span><span class="op">.</span><span class="var">Humanoid</span><span class="op">.</span><span class="var">WalkSpeed</span> <span class="op">=</span> <span class="var">v</span>
+<span class="kw">end</span><span class="op">)</span>
+
+<span class="kw">local</span> <span class="var">vol</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addSlider</span><span class="op">(</span><span class="str">"Volume"</span><span class="op">,</span> <span class="num">0</span><span class="op">,</span> <span class="num">100</span><span class="op">,</span> <span class="num">50</span><span class="op">,</span> <span class="num">5</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">v</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="var">v</span><span class="op">)</span>
+<span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="textbox">
+    <h2>addTextBox()</h2>
+    <p class="section-desc">Adds a labeled text input field. The callback fires only when the user presses Enter — not on every keystroke.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">ctrl</span> = win:<span class="fn">addTextBox</span><span class="args">( name, placeholder, maxLength?, callback )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Label shown above the input.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">placeholder <span class="p-opt">optional</span></span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Ghost text shown when the field is empty.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">maxLength <span class="p-opt">optional</span></span>
+          <span class="p-type">number</span>
+          <span class="p-desc">Maximum character count. Defaults to <code>200</code>. If omitted, the callback can be passed in this position directly.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">callback <span class="p-opt">optional</span></span>
+          <span class="p-type">function(v: string)</span>
+          <span class="p-desc">Fires on <code>FocusLost</code> only when Enter was pressed. Not called on blur alone.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — ctrl object</div>
+          <div class="ret-row"><code>ctrl:get()</code> — returns current text</div>
+          <div class="ret-row"><code>ctrl:set(str)</code> — programmatically set text</div>
+          <div class="ret-row"><code>ctrl:clear()</code> — clears the field</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="kw">local</span> <span class="var">box</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addTextBox</span><span class="op">(</span><span class="str">"Target Player"</span><span class="op">,</span> <span class="str">"Enter username..."</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">v</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Submitted:"</span><span class="op">,</span> <span class="var">v</span><span class="op">)</span>
+    <span class="var">box</span><span class="op">:</span><span class="fn">clear</span><span class="op">()</span>
+<span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="dropdown">
+    <h2>addDropdown()</h2>
+    <p class="section-desc">Adds a dropdown with a floating option panel. Options can be replaced at runtime.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">ctrl</span> = win:<span class="fn">addDropdown</span><span class="args">( name, options, default, callback )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Label to the left of the dropdown button.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">options</span>
+          <span class="p-type">string[]</span>
+          <span class="p-desc">Array of option strings. Must not be empty.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">default <span class="p-opt">optional</span></span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Initially selected value. Defaults to <code>options[1]</code>.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">callback <span class="p-opt">optional</span></span>
+          <span class="p-type">function(v: string)</span>
+          <span class="p-desc">Fires when the user selects an option.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — ctrl object</div>
+          <div class="ret-row"><code>ctrl:get()</code> — returns currently selected string</div>
+          <div class="ret-row"><code>ctrl:set(str)</code> — programmatically select an option</div>
+          <div class="ret-row"><code>ctrl:refresh(newOptions)</code> — replace the option list entirely</div>
+          <div class="ret-row"><code>ctrl:destroy()</code> — remove the dropdown and clean up its connections</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="kw">local</span> <span class="var">dd</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addDropdown</span><span class="op">(</span><span class="str">"Team"</span><span class="op">,</span> <span class="op">{</span><span class="str">"Red"</span><span class="op">,</span> <span class="str">"Blue"</span><span class="op">,</span> <span class="str">"Green"</span><span class="op">},</span> <span class="str">"Red"</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">v</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Picked:"</span><span class="op">,</span> <span class="var">v</span><span class="op">)</span>
+<span class="kw">end</span><span class="op">)</span>
+
+<span class="kw">local</span> <span class="var">names</span> <span class="op">=</span> <span class="op">{}</span>
+<span class="kw">for</span> <span class="op">_,</span> <span class="var">p</span> <span class="kw">in</span> <span class="fn">pairs</span><span class="op">(</span><span class="fn">game</span><span class="op">.</span><span class="var">Players</span><span class="op">:</span><span class="fn">GetPlayers</span><span class="op">())</span> <span class="kw">do</span>
+    <span class="fn">table.insert</span><span class="op">(</span><span class="var">names</span><span class="op">,</span> <span class="var">p</span><span class="op">.</span><span class="var">Name</span><span class="op">)</span>
+<span class="kw">end</span>
+<span class="var">dd</span><span class="op">:</span><span class="fn">refresh</span><span class="op">(</span><span class="var">names</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="keybind">
+    <h2>addKeybind()</h2>
+    <p class="section-desc">Adds a keybind row. Clicking enters listening mode — the next key pressed becomes the binding. Clicking again while listening clears the binding.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">ctrl</span> = win:<span class="fn">addKeybind</span><span class="args">( name, default, callback )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Label. Also used as the internal registry key — must be unique within the window.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">default <span class="p-opt">optional</span></span>
+          <span class="p-type">Enum.KeyCode</span>
+          <span class="p-desc">Initial binding. Pass <code>nil</code> for unbound.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">callback <span class="p-opt">optional</span></span>
+          <span class="p-type">function</span>
+          <span class="p-desc">Called every time the bound key is pressed. Not called during listening mode.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — ctrl object</div>
+          <div class="ret-row"><code>ctrl:get()</code> — returns current <code>Enum.KeyCode</code> or <code>nil</code></div>
+          <div class="ret-row"><code>ctrl:set(keyCode)</code> — assign a key programmatically</div>
+        </div>
+        <div class="note">
+          <span class="note-ico">⚠</span>
+          <span>Keybind names must be unique per window. Two keybinds sharing the same name will overwrite each other in the internal registry.</span>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">addKeybind</span><span class="op">(</span><span class="str">"Toggle Fly"</span><span class="op">,</span> <span class="var">Enum</span><span class="op">.</span><span class="var">KeyCode</span><span class="op">.</span><span class="var">F</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span>
+    <span class="fn">print</span><span class="op">(</span><span class="str">"Fly toggled"</span><span class="op">)</span>
+<span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="holdbutton">
+    <h2>addHoldButton()</h2>
+    <p class="section-desc">Adds a hold-to-activate element. It becomes active while the user holds the mouse button down on it or holds the bound key. Releasing immediately deactivates it. A progress bar fills over the configured duration while held.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">ctrl</span> = win:<span class="fn">addHoldButton</span><span class="args">( name, keyCode, holdDuration, onActive, onInactive )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Unlike a toggle, this element is only active for as long as the user physically holds the input. The moment the mouse button or key is released, <code>onInactive</code> fires and the bar resets. Both mouse and keyboard inputs work simultaneously — releasing either one while the other is still held keeps it active.</p>
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Label shown on the element.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">keyCode <span class="p-opt">optional</span></span>
+          <span class="p-type">Enum.KeyCode</span>
+          <span class="p-desc">Optional keyboard shortcut that also triggers hold. Pass <code>nil</code> for mouse-only.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">holdDuration <span class="p-opt">optional</span></span>
+          <span class="p-type">number</span>
+          <span class="p-desc">How many seconds the progress bar takes to fill completely. Defaults to <code>1</code>. This is cosmetic only — the element activates on press, not after the bar fills.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">onActive <span class="p-opt">optional</span></span>
+          <span class="p-type">function</span>
+          <span class="p-desc">Fires once when the hold begins.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">onInactive <span class="p-opt">optional</span></span>
+          <span class="p-type">function</span>
+          <span class="p-desc">Fires once when the hold ends (input released).</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — ctrl object</div>
+          <div class="ret-row"><code>ctrl.isActive()</code> — returns <code>true</code> while being held</div>
+          <div class="ret-row"><code>ctrl.setActive(bool)</code> — force active/inactive state and update the visual, does not fire callbacks</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">addHoldButton</span><span class="op">(</span><span class="str">"Sprint"</span><span class="op">,</span> <span class="var">Enum</span><span class="op">.</span><span class="var">KeyCode</span><span class="op">.</span><span class="var">LeftShift</span><span class="op">,</span> <span class="num">2</span><span class="op">,</span>
+    <span class="kw">function</span><span class="op">()</span>
+        <span class="fn">game</span><span class="op">.</span><span class="var">Players</span><span class="op">.</span><span class="var">LocalPlayer</span><span class="op">.</span><span class="var">Character</span><span class="op">.</span><span class="var">Humanoid</span><span class="op">.</span><span class="var">WalkSpeed</span> <span class="op">=</span> <span class="num">50</span>
+    <span class="kw">end</span><span class="op">,</span>
+    <span class="kw">function</span><span class="op">()</span>
+        <span class="fn">game</span><span class="op">.</span><span class="var">Players</span><span class="op">.</span><span class="var">LocalPlayer</span><span class="op">.</span><span class="var">Character</span><span class="op">.</span><span class="var">Humanoid</span><span class="op">.</span><span class="var">WalkSpeed</span> <span class="op">=</span> <span class="num">16</span>
+    <span class="kw">end</span>
+<span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="playerlist">
+    <h2>addPlayerList()</h2>
+    <p class="section-desc">Adds a live player list with avatar thumbnails. Supports two distinct modes depending on the type of the first argument.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">ctrl</span> = win:<span class="fn">addPlayerList</span><span class="args">( labelOrCallback, callback? )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">The function behaves differently based on whether the first argument is a <code>string</code> or a <code>function</code>.</p>
+        <div class="params-head">Action Mode — first argument is a string</div>
+        <div class="param">
+          <span class="p-name">label</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Text shown on a button beside each player card (e.g. <code>"Kick"</code>, <code>"Teleport"</code>).</span>
+        </div>
+        <div class="param">
+          <span class="p-name">callback</span>
+          <span class="p-type">function(player)</span>
+          <span class="p-desc">Fires with the <code>Player</code> instance when their action button is clicked.</span>
+        </div>
+        <div class="params-head" style="margin-top:14px">Select Mode — first argument is a function</div>
+        <div class="param">
+          <span class="p-name">callback</span>
+          <span class="p-type">function(player, selected)</span>
+          <span class="p-desc">Clicking a card toggles its selected state. Fires with the <code>Player</code> and a boolean. Only one player can be selected at a time.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — ctrl object</div>
+          <div class="ret-row"><code>ctrl.refresh()</code> — rebuild the list from current server players</div>
+          <div class="ret-row"><code>ctrl.getSelected()</code> — returns selected <code>Player</code> or <code>nil</code> (select mode only)</div>
+        </div>
+        <div class="tip">
+          <span class="tip-ico">✦</span>
+          <span>Avatars are loaded asynchronously so the list renders immediately and portraits fill in as they arrive.</span>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua — action mode</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">addPlayerList</span><span class="op">(</span><span class="str">"Teleport"</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">player</span><span class="op">)</span>
+    <span class="kw">local</span> <span class="var">char</span> <span class="op">=</span> <span class="var">player</span><span class="op">.</span><span class="var">Character</span>
+    <span class="kw">if</span> <span class="var">char</span> <span class="kw">then</span>
+        <span class="fn">game</span><span class="op">.</span><span class="var">Players</span><span class="op">.</span><span class="var">LocalPlayer</span><span class="op">.</span><span class="var">Character</span><span class="op">.</span><span class="var">HumanoidRootPart</span><span class="op">.</span><span class="var">CFrame</span> <span class="op">=</span> <span class="var">char</span><span class="op">.</span><span class="var">HumanoidRootPart</span><span class="op">.</span><span class="var">CFrame</span>
+    <span class="kw">end</span>
+<span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua — select mode</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="kw">local</span> <span class="var">list</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addPlayerList</span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="var">player</span><span class="op">,</span> <span class="var">selected</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="var">player</span><span class="op">.</span><span class="var">Name</span><span class="op">,</span> <span class="var">selected</span><span class="op">)</span>
+<span class="kw">end</span><span class="op">)</span>
+
+<span class="fn">print</span><span class="op">(</span><span class="var">list</span><span class="op">.</span><span class="fn">getSelected</span><span class="op">())</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="section">
+    <div class="section-eyebrow">05 — layout</div>
+    <h2>addSection()</h2>
+    <p class="section-desc">Inserts a horizontal rule with a centered text label for grouping elements visually.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-fn">FN</span>
+        <span class="card-sig">win:<span class="fn">addSection</span><span class="args">( name )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Text centered in the divider.</span>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">addSection</span><span class="op">(</span><span class="str">"Movement"</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addToggle</span><span class="op">(</span><span class="str">"Fly"</span><span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addSection</span><span class="op">(</span><span class="str">"Visual"</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addToggle</span><span class="op">(</span><span class="str">"ESP"</span><span class="op">,</span> <span class="kw">false</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="separator">
+    <h2>addSeparator()</h2>
+    <p class="section-desc">Inserts a thin horizontal line with no label — a minimal visual break between elements.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-fn">FN</span>
+        <span class="card-sig">win:<span class="fn">addSeparator</span><span class="args">()</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">No parameters. Renders a 10px tall row containing a 1px separator line.</p>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">addButton</span><span class="op">(</span><span class="str">"Action A"</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addSeparator</span><span class="op">()</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">addButton</span><span class="op">(</span><span class="str">"Action B"</span><span class="op">,</span> <span class="kw">function</span><span class="op">()</span> <span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="label">
+    <h2>addLabel()</h2>
+    <p class="section-desc">Adds a read-only text row. Supports dynamic updates.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">ctrl</span> = win:<span class="fn">addLabel</span><span class="args">( text )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">text</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Initial text. Wraps automatically.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — ctrl object</div>
+          <div class="ret-row"><code>ctrl:get()</code> — returns current text</div>
+          <div class="ret-row"><code>ctrl:set(str)</code> — update displayed text</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="kw">local</span> <span class="var">lbl</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addLabel</span><span class="op">(</span><span class="str">"v1.0.0 loaded."</span><span class="op">)</span>
+<span class="var">lbl</span><span class="op">:</span><span class="fn">set</span><span class="op">(</span><span class="str">"Connected to server."</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="status">
+    <h2>addStatus()</h2>
+    <p class="section-desc">Adds a two-column row with a fixed label on the left and a dynamically updatable value on the right.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">ctrl</span> = win:<span class="fn">addStatus</span><span class="args">( name, initialValue? )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">name</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Static label on the left.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">initialValue <span class="p-opt">optional</span></span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Starting value text. Defaults to <code>"—"</code>.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns — ctrl object</div>
+          <div class="ret-row"><code>ctrl:get()</code> — returns current value string</div>
+          <div class="ret-row"><code>ctrl:set(str, color?)</code> — update value text and optionally its <code>Color3</code></div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="kw">local</span> <span class="var">ping</span> <span class="op">=</span> <span class="var">win</span><span class="op">:</span><span class="fn">addStatus</span><span class="op">(</span><span class="str">"Ping"</span><span class="op">,</span> <span class="str">"—"</span><span class="op">)</span>
+
+<span class="fn">task.spawn</span><span class="op">(</span><span class="kw">function</span><span class="op">()</span>
+    <span class="kw">while</span> <span class="kw">true</span> <span class="kw">do</span>
+        <span class="kw">local</span> <span class="var">ms</span>  <span class="op">=</span> <span class="fn">math.round</span><span class="op">(</span><span class="fn">game</span><span class="op">:</span><span class="fn">GetService</span><span class="op">(</span><span class="str">"Stats"</span><span class="op">).</span><span class="var">Network</span><span class="op">.</span><span class="var">ServerStatsItem</span><span class="op">[</span><span class="str">"Data Ping"</span><span class="op">]:</span><span class="fn">GetValue</span><span class="op">())</span>
+        <span class="kw">local</span> <span class="var">col</span> <span class="op">=</span> <span class="var">ms</span> <span class="op">&lt;</span> <span class="num">100</span> <span class="kw">and</span> <span class="fn">Color3</span><span class="op">.</span><span class="fn">fromRGB</span><span class="op">(</span><span class="num">80</span><span class="op">,</span><span class="num">200</span><span class="op">,</span><span class="num">120</span><span class="op">)</span> <span class="kw">or</span> <span class="fn">Color3</span><span class="op">.</span><span class="fn">fromRGB</span><span class="op">(</span><span class="num">224</span><span class="op">,</span><span class="num">92</span><span class="op">,</span><span class="num">92</span><span class="op">)</span>
+        <span class="var">ping</span><span class="op">:</span><span class="fn">set</span><span class="op">(</span><span class="var">ms</span> <span class="op">..</span> <span class="str">"ms"</span><span class="op">,</span> <span class="var">col</span><span class="op">)</span>
+        <span class="fn">task.wait</span><span class="op">(</span><span class="num">1</span><span class="op">)</span>
+    <span class="kw">end</span>
+<span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="notify">
+    <div class="section-eyebrow">06 — misc</div>
+    <h2>notify()</h2>
+    <p class="section-desc">Shows a toast notification that slides in from the right edge of the screen. Multiple notifications stack and reflow automatically.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-fn">FN</span>
+        <span class="card-sig">win:<span class="fn">notify</span><span class="args">( title, body, imageId?, persistent? )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">title</span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Bold primary text.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">body <span class="p-opt">optional</span></span>
+          <span class="p-type">string</span>
+          <span class="p-desc">Smaller text below the title.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">imageId <span class="p-opt">optional</span></span>
+          <span class="p-type">number</span>
+          <span class="p-desc">Roblox asset ID as a plain number — no <code>rbxassetid://</code> prefix. Renders a 38×38 icon.</span>
+        </div>
+        <div class="param">
+          <span class="p-name">persistent <span class="p-opt">optional</span></span>
+          <span class="p-type">boolean</span>
+          <span class="p-desc">If <code>true</code>, the notification never auto-dismisses. Defaults to <code>false</code> — 6 second lifetime.</span>
+        </div>
+        <div class="tip">
+          <span class="tip-ico">✦</span>
+          <span>Notifications live in a separate <code>AK_NOTIF_GUI</code> ScreenGui and are independent of the main window. A click sound plays on each appearance.</span>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">notify</span><span class="op">(</span><span class="str">"Loaded"</span><span class="op">,</span> <span class="str">"Script is ready."</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">notify</span><span class="op">(</span><span class="str">"Update"</span><span class="op">,</span> <span class="str">"v2.0 available"</span><span class="op">,</span> <span class="num">7733960981</span><span class="op">)</span>
+<span class="var">win</span><span class="op">:</span><span class="fn">notify</span><span class="op">(</span><span class="str">"Warning"</span><span class="op">,</span> <span class="str">"Low FPS"</span><span class="op">,</span> <span class="kw">nil</span><span class="op">,</span> <span class="kw">true</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-section" id="addconnection">
+    <h2>addConnection()</h2>
+    <p class="section-desc">Connects a signal and registers it with the window so it is automatically disconnected when the window is closed.</p>
+    <div class="card">
+      <div class="card-head" onclick="tog(this)">
+        <span class="tag tag-ret">RET</span>
+        <span class="card-sig"><span class="var">conn</span> = win:<span class="fn">addConnection</span><span class="args">( signal, callback )</span></span>
+        <span class="card-arrow">▾</span>
+      </div>
+      <div class="card-body">
+        <p class="card-desc">Use this instead of a bare <code>signal:Connect(fn)</code> for any connections your script makes inside the window's lifecycle. When the X button is pressed, all connections registered this way are disconnected automatically.</p>
+        <div class="params-head">Parameters</div>
+        <div class="param">
+          <span class="p-name">signal</span>
+          <span class="p-type">RBXScriptSignal</span>
+          <span class="p-desc">Any Roblox signal (e.g. <code>RunService.Heartbeat</code>, <code>Players.PlayerAdded</code>).</span>
+        </div>
+        <div class="param">
+          <span class="p-name">callback</span>
+          <span class="p-type">function</span>
+          <span class="p-desc">The handler to connect.</span>
+        </div>
+        <div class="returns">
+          <div class="returns-head">Returns</div>
+          <div class="ret-row"><code>RBXScriptConnection</code> — same as <code>:Connect()</code> returns</div>
+        </div>
+        <div class="code-wrap">
+          <div class="code-bar"><span class="code-lang">lua</span><button class="code-btn" onclick="cp(this)">copy</button></div>
+          <pre><code><span class="var">win</span><span class="op">:</span><span class="fn">addConnection</span><span class="op">(</span><span class="fn">game</span><span class="op">:</span><span class="fn">GetService</span><span class="op">(</span><span class="str">"RunService"</span><span class="op">).</span><span class="var">Heartbeat</span><span class="op">,</span> <span class="kw">function</span><span class="op">(</span><span class="var">dt</span><span class="op">)</span>
+    <span class="fn">print</span><span class="op">(</span><span class="var">dt</span><span class="op">)</span>
+<span class="kw">end</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top:1px solid var(--border); padding-top:28px; margin-top:8px;">
+    <p style="font-family:var(--mono); font-size:11px; color:var(--muted);">
+      AK Admin Library — <a href="https://absent.wtf/AKADMINLIB/LIB.lua" style="color:var(--green);text-decoration:none;">absent.wtf/AKADMINLIB/LIB.lua</a>
+    </p>
+  </div>
+
+</main>
+</div>
+
+<script>
+  function tog(header) {
+    header.parentElement.classList.toggle('open');
+  }
+
+  function cp(btn) {
+    const pre = btn.closest('.code-wrap').querySelector('pre');
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      btn.textContent = 'copied!';
+      btn.classList.add('ok');
+      setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('ok'); }, 1800);
+    });
+  }
+
+  function copyUrl(btn) {
+    const url = document.getElementById('urltext').textContent.trim();
+    navigator.clipboard.writeText(`local lb = loadstring(game:HttpGet("${url}"))()`)
+      .then(() => {
+        btn.textContent = 'COPIED!';
+        btn.classList.add('ok');
+        setTimeout(() => { btn.textContent = 'COPY'; btn.classList.remove('ok'); }, 1800);
+      });
+  }
+
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.nav-item').forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+
+  document.querySelectorAll('.doc-section[id], .hero[id]').forEach(s => obs.observe(s));
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f533fa48fb04673',t:'MTc3NzY4NTI5OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><iframe height="1" width="1" style="position: absolute; top: 0px; left: 0px; border-width: medium; border-style: none; border-color: currentcolor; border-image: initial; visibility: hidden;" src="./AKAdminLib_Documentation_files/saved_resource.html"></iframe>
+
+</body></html>
