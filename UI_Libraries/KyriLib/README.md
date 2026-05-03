@@ -5,9 +5,9 @@
 
 ### 👤 Original Creator Information
 *   **Developer:** [Justanewplayer19](https://github.com/Justanewplayer19)
-*   **Original Repository:** [KyriLib GitHub](https://github.com/Justanewplayer19/KyriLib)
-*   **Documentation (github.io):** [KyriLib Docs](https://justanewplayer19.github.io/KyriLib)
-*   **V2 Documentation:** [KyriLib Docs](https://kyrilib.dev)
+*   **Original Repository:** [KyriLib GitHub Repo](https://github.com/Justanewplayer19/KyriLib)
+*   **V1 Docs (github.io):** [KyriLib V1 Docs](https://justanewplayer19.github.io/KyriLib)
+*   **V2 Docs (kyrilib.dev):** [KyriLib V2 Docs](https://kyrilib.dev)
 
 ---
 
@@ -48,7 +48,9 @@ end, "ws")
 
 ## Documentation
 
-Full docs: [https://justanewplayer19.github.io/KyriLib](https://justanewplayer19.github.io/KyriLib)
+Full V1 Docs: [https://justanewplayer19.github.io/KyriLib](https://justanewplayer19.github.io/KyriLib)
+<br />
+Full V2 Docs: [https://kyrilib.dev](https://kyrilib.dev)
 
 ## API Reference
 
